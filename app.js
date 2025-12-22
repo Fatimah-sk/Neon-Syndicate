@@ -231,8 +231,8 @@ function prettyItem(itemId) {
 
 // --- Events ---
 function runRandomEvent() {
-  // 35% sjanse event ved reise
-  if (Math.random() > 0.35) return;
+  // 20% sjanse event ved reise
+  if (Math.random() > 0.2) return;
 
   const roll = Math.random();
 
