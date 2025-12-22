@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Syndicate: Trading Sim</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+    <link rel="icon" type="image/png" href="assets/icons/icons8-money-94.png">
+</head>
+<body class="trading-body">
+    <div class="wrap">
+        <header >
+            <div class="hud panel">
+                <h1>Neon Syndicate</h1>
+                <p class="sub">Trading Sim • Neon City</p>
+            </div>
+
+            <div class="hud panel">
+                <div class="stat">
+                    <h1 id="hudName">User Name</h1>
+                    <img src="assets/animal avatar/wolf.png" alt="User-Avatar" class="tradingAvatar" id="hudAvatar">
+                </div>
+                <div class="stat">
+                    <span class="label">CREDIT</span>
+                    <span id="kredValue" class="value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="label">DISTRICT</span>
+                    <span id="districtValue" class="value">—</span>
+                </div>
+                <div class="inv">
+                    <span class="label">INVENTORY</span>
+                    <div id="inventoryValue" class="invList">—</div>
+                </div>
+                <button id="resetBtn" class="btn danger">Reset game</button>
+            </div>
+        </header>
+
+        <main class="grid">
+            <section class="panel">
+                <h2>MarkeT</h2>
+                <div id="market" class="market"></div>
+                <p class="hint">Hint: Prices change when you travel.</p>
+            </section>
+
+            <section class="panel">
+                <h2>Travel</h2>
+                <div id="travelMap" class="travelMap">
+
+                    <div class="node" data-district="afterglow" style="--x: 15; --y: 65;">
+                        <span class="dot"></span>
+                        <span class="label">Afterglow</span>
+                    </div>
+
+                    <div class="node" data-district="ironharbor" style="--x: 50; --y: 30;">
+                        <span class="dot"></span>
+                        <span class="label">Iron Harbor</span>
+                    </div>
+
+                    <div class="node" data-district="ghostmarket" style="--x: 80; --y: 65;">
+                        <span class="dot"></span>
+                        <span class="label">GhostMarket</span>
+                    </div>
+
+                    <img id="mapPlayer" class="mapPlayer" />
+                </div>
+            </section>
+
+            <section class="panel feed">
+                <h2>Feed</h2>
+                <div id="log" class="log"></div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <span>Frontend-only • HTML/CSS/JS • localStorage</span>
+        </footer>
+
+    </div>
+
+</body>
+</html>
