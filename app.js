@@ -76,7 +76,7 @@ function money(n) {
 
 // --- Pricing ---
 function randomizePrices() {
-  state.oldPrices = null; // ✅ إزالة الخصم السابق
+  state.oldPrices = null; // fjern old prices
   const d = getDistrict();
   const newPrices = {};
 

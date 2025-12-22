@@ -14,7 +14,7 @@ const avatarList = document.getElementById("avatarList");
 
 
 
-// 1) نقرر شو نظهر
+// 1)bestemmer hva vi skal vise basert på om det finnes en lagret spilltilstand 
 const hasSave = !!localStorage.getItem(GAME_KEY);
 
 if (hasSave) {
@@ -24,11 +24,11 @@ if (hasSave) {
   districtSelect.disabled = true;
   editBtn.disabled = true;
   editBtn.style.cursor = "not-allowed";
-  // نرجّع البيانات من localStorage 
+  // // hent data fra localStorage
   const savedName = localStorage.getItem("playerName");
   const savedAvatar = localStorage.getItem("playerAvatar");
 
-  // المنطقة نجيبها من GAME_KEY (آخر منطقة لعب فيها)
+  //Regionen er hentet fra GAME_KEY (regionen som sist ble spilt i)
   const game = JSON.parse(localStorage.getItem(GAME_KEY));
 
   if (savedName) nicknameInput.value = savedName;
@@ -36,8 +36,7 @@ if (hasSave) {
 
   if (game&&game.districtId) districtSelect.value = game.districtId;
 } else {
-  // أول مرة
-  startBtn.style.display = "block";
+// Ingen lagret status, vis "Start trading"-knappen og skjul edit-btns
   resetButtons.style.display = "none";
   nicknameInput.disabled = false;
   districtSelect.disabled = false;
@@ -46,12 +45,12 @@ if (hasSave) {
 
 
 
-// إظهار / إخفاء لائحة الصور
+// Vis/skjul avatarliste
 editBtn.addEventListener("click", (e) => {
   avatarList.classList.toggle("hidden");
 });
 
-// اختيار صورة
+//Velg et avatarbilde fra listen
 avatarList.querySelectorAll("img").forEach(img => {
   img.addEventListener("click", (e) => {
     userAvatar.src = img.src;    // تغيير صورة المستخدم
