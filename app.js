@@ -299,7 +299,7 @@ resetBtn.onclick = () => {
   saveGame();
   playSfx(resetSound);  // 🔁
   setTimeout(() => {
-    window.location.href = "main.html";
+    window.location.href = "index.html";
   }, 240);
 };
 
