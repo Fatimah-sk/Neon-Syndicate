@@ -189,7 +189,7 @@ function buy(itemId) {
 
   if (state.kred < price) {
     playSfx(errorSound); 
-    log(`Not enough kred to buy 1x ${prettyItem(itemId)} for ${price} 🪙.`, "bad");
+    log(`Not enough kred to buy 1x ${prettyItem(itemId)} for ${price} 🪙`, "bad");
     return;
   }
 
@@ -197,7 +197,7 @@ function buy(itemId) {
   state.inventory[itemId]++;
 
   playSfx(paySound); // ✅ صوت الشراء
-  log(`Bought 1x ${prettyItem(itemId)} for ${price} 🪙.`, "good");
+  log(`Bought 1x ${prettyItem(itemId)} for ${price} 🪙`, "good");
 
   saveGame();
   renderAll();
@@ -216,7 +216,7 @@ function sell(itemId) {
   state.kred += price;
 
   playSfx(coinSound);
-  log(`Sold 1x ${prettyItem(itemId)} for ${price} 🪙.`, "good");
+  log(`Sold 1x ${prettyItem(itemId)} for ${price} 🪙`, "good");
 
   saveGame();
   renderAll();
@@ -251,7 +251,7 @@ function runRandomEvent() {
     const fee = 20 + Math.floor(Math.random() * 40);
     state.kred = Math.max(0, state.kred - fee);
     log(`🚓Checkpoint fee paid: ${fee} 🪙`, "bad");
-    alert(`🚨 NCPD Checkpoint!\nYou paid a fine of ${fee} 🪙.`);
+    alert(`🚨 NCPD Checkpoint!\nYou paid a fine of ${fee} 🪙`);
   }
 
 }
