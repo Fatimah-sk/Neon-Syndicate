@@ -74,6 +74,28 @@ function money(n) {
   return `${n} kred`;
 }
 
+
+
+
+
+function showPopup(message, type = "good", icon = "⚡") {
+  const popup = document.getElementById("gamePopup");
+  const text = popup.querySelector(".popup-text");
+  const iconEl = popup.querySelector(".popup-icon");
+
+  popup.className = `popup show ${type}`;
+  text.innerHTML = message;
+  iconEl.textContent = icon;
+
+  // ⏱️ مدة الظهور (مثالية: 3 ثانية)
+  setTimeout(() => {
+    popup.classList.remove("show");
+  }, 3000);
+}
+
+
+
+
 // --- Pricing ---
 function randomizePrices() {
   state.oldPrices = null; // fjern old prices
@@ -104,7 +126,7 @@ function renderMarket() {
     const row = document.createElement("div");
     row.className = "row";
 
-    // 👇 1. Lag priceHTML 
+    // 👇  Lag priceHTML 
     let priceHTML = `${state.prices[it.id]} 🪙`;
 
     if (state.oldPrices && state.oldPrices[it.id]) {
@@ -114,7 +136,7 @@ function renderMarket() {
       `;
     }
 
-    // 👇 2. Bruk priceHTML i HTML-en
+    // 👇  Bruk priceHTML i HTML-en
     row.innerHTML = `
       <div>
         <div class="itemName">${it.name}</div>
@@ -189,6 +211,7 @@ function buy(itemId) {
 
   if (state.kred < price) {
     playSfx(errorSound); 
+    showPopup(`Not enough kred to buy 1x ${prettyItem(itemId)} for ${price} 🪙`, "bad");
     log(`Not enough kred to buy 1x ${prettyItem(itemId)} for ${price} 🪙`, "bad");
     return;
   }
@@ -207,7 +230,9 @@ function buy(itemId) {
 function sell(itemId) {
   if (state.inventory[itemId] <= 0) {
     playSfx(errorSound);
+    showPopup(`You don't have ${prettyItem(itemId)} in inventory.`, "bad");
     log(`You don't have ${prettyItem(itemId)} in inventory.`, "bad");
+    
     return;
   }
 
@@ -243,7 +268,7 @@ function runRandomEvent() {
       state.prices[k] = Math.max(5, Math.round(state.prices[k] * 0.85));
     }
     log("Fixer deal! Prices dropped by 15%.", "good");
-     alert("💠 Fixer Deal!\nAll market prices are now 15% cheaper.");
+    showPopup("💠 Fixer Deal!<br> Prices dropped by 15%.", "good");
   }
 
    // 🚓NCPD avgift: trekk kred 
@@ -251,7 +276,7 @@ function runRandomEvent() {
     const fee = 20 + Math.floor(Math.random() * 40);
     state.kred = Math.max(0, state.kred - fee);
     log(`🚓Checkpoint fee paid: ${fee} 🪙`, "bad");
-    alert(`🚨 NCPD Checkpoint!\nYou paid a fine of ${fee} 🪙`);
+    showPopup(`🚨 Police Checkpoint!<br> You paid a fine of ${fee} 🪙`, "bad");
   }
 
 }

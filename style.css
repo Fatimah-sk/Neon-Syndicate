@@ -412,20 +412,76 @@ body{
 
 
 @media (max-width: 900px){
-  .hud{flex-direction:column;align-items:flex-start}
-  .grid{grid-template-columns:1fr}
-}
-#mapPlayer{
-width: 28px;
-height: 28px;}
 
-.log p {
-  font-size: 13px;
-} 
+  .hud{
+    flex-direction:column;
+    align-items:flex-start
+  }
 
+  .grid{
+    grid-template-columns:1fr;
+  }
 
+  #mapPlayer{
+    width: 28px;
+    height: 28px;
+  }
 
  .ghost{
-  width: 120px;
-  margin: 10px;
+    width: 120px;
+    margin: 10px;
+}
+
+  .start-container{
+    width: 80%;
+    margin: 20px;
+}
+
+  .log p{
+    font-size: 13px;
+}
+
+}
+
+
+
+
+.popup{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: rgba(20, 15, 40, 0.96);
+  padding: 18px 24px;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+  z-index: 9999;
+}
+
+.popup.show{
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-icon{
+  font-size: 22px;
+}
+
+.popup.good{
+  border-color: var(--neon);
+  box-shadow: 0 0 15px var(--neon) inset;
+
+
+}
+
+.popup.bad{
+  border: 1px solid var(--line);
+  box-shadow: 0 0 15px var(--line) inset;
 }
