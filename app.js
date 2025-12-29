@@ -119,6 +119,8 @@ function renderStatus() {
     .join(" • ");
 }
 
+
+
 function renderMarket() {
   marketEl.innerHTML = "";
 
@@ -126,39 +128,37 @@ function renderMarket() {
     const row = document.createElement("div");
     row.className = "row";
 
-    // 👇  Lag priceHTML 
-    let priceHTML = `${state.prices[it.id]} 🪙`;
-
-    if (state.oldPrices && state.oldPrices[it.id]) {
-      priceHTML = `
-        <span class="old-price">${state.oldPrices[it.id]} 🪙</span>
-        <span class="new-price">${state.prices[it.id]} 🪙</span>
-      `;
-    }
-
-    // 👇  Bruk priceHTML i HTML-en
+    // ✅ كمية افتراضية 1
     row.innerHTML = `
       <div>
         <div class="itemName">${it.name}</div>
         <div class="small">In stock: ${state.inventory[it.id]}</div>
       </div>
-      <div class="price">${priceHTML}</div>
+
+      <div class="price">${state.prices[it.id]} 🪙</div>
+
+      <input class="qty" type="number" min="1" max="999" value="1" />
+
     `;
+
+    const qtyInput = row.querySelector(".qty");
 
     const buyBtn = document.createElement("button");
     buyBtn.className = "btn";
     buyBtn.textContent = "Buy";
-    buyBtn.onclick = () => buy(it.id);
+    buyBtn.onclick = () => buy(it.id, qtyInput.value);
 
     const sellBtn = document.createElement("button");
     sellBtn.className = "btn";
     sellBtn.textContent = "Sell";
-    sellBtn.onclick = () => sell(it.id);
+    sellBtn.onclick = () => sell(it.id, qtyInput.value);
 
     row.append(buyBtn, sellBtn);
     marketEl.appendChild(row);
   }
 }
+
+
 
 
 // --- Map ---
@@ -190,7 +190,7 @@ function renderAll() {
 
 
 
-// --- Trading ---
+// --- Trading ---Buy/Sell
 
 const paySound = new Audio("assets/sounds/buy.mp3");
 const coinSound = new Audio("assets/sounds/sell.wav");
@@ -198,7 +198,7 @@ const errorSound = new Audio("assets/sounds/error.wav");
 
 
 paySound.volume = 0.5;
-coinSound.volume = 0.6;
+coinSound.volume = 0.5;
 errorSound.volume = 0.5;
 
 function playSfx(aud) {
@@ -206,52 +206,71 @@ function playSfx(aud) {
   aud.play();
 }
 
-function buy(itemId) {
-  const price = state.prices[itemId];
-
-  if (state.kred < price) {
-    playSfx(errorSound); 
-    showPopup(`Not enough kred to buy 1x ${prettyItem(itemId)} for ${price} 🪙`, "bad");
-    log(`Not enough kred to buy 1x ${prettyItem(itemId)} for ${price} 🪙`, "bad");
-    return;
-  }
-
-  state.kred -= price;
-  state.inventory[itemId]++;
-
-  playSfx(paySound); // ✅ صوت الشراء
-  log(`Bought 1x ${prettyItem(itemId)} for ${price} 🪙`, "good");
-
-  saveGame();
-  renderAll();
-}
-
-
-function sell(itemId) {
-  if (state.inventory[itemId] <= 0) {
-    playSfx(errorSound);
-    showPopup(`You don't have ${prettyItem(itemId)} in inventory.`, "bad");
-    log(`You don't have ${prettyItem(itemId)} in inventory.`, "bad");
-    
-    return;
-  }
-
-  const price = state.prices[itemId];
-  state.inventory[itemId]--;
-  state.kred += price;
-
-  playSfx(coinSound);
-  log(`Sold 1x ${prettyItem(itemId)} for ${price} 🪙`, "good");
-
-  saveGame();
-  renderAll();
-}
-
 
 function prettyItem(itemId) {
   const item = items.find(it => it.id === itemId);
   return item ? item.name : itemId;
 }
+
+
+function toQty(q) {
+  const n = parseInt(q, 10);
+  return Number.isFinite(n) && n > 0 ? n : 1;
+}
+
+
+
+function buy(itemId, qtyRaw) {
+  const qty = toQty(qtyRaw);
+  const price = state.prices[itemId];
+  const total = price * qty;
+
+  if (state.kred < total) {
+    playSfx(errorSound);
+    showPopup(`Not enough kred to buy x${qty}  ${prettyItem(itemId)}`, "bad", "❌");
+    log(`Not enough kred to buy x${qty} ${prettyItem(itemId)}`, "bad");
+    return;
+  }
+
+  state.kred -= total;
+  state.inventory[itemId] += qty;
+
+  saveGame();
+  renderAll();
+
+   playSfx(paySound);
+
+  showPopup(`Bought x${qty} ${prettyItem(itemId)} (-${total}🪙)`, "good", "🛒");
+  log(`Bought x${qty} ${prettyItem(itemId)} for ${total}🪙`, "good");
+}
+
+
+
+function sell(itemId, qtyRaw) {
+  const qty = toQty(qtyRaw);
+
+  if (state.inventory[itemId] < qty) {
+    playSfx(errorSound);
+    showPopup(`You don't have x${qty} ${prettyItem(itemId)} in inventory`, "bad", "❌");
+    log(`You don't have x${qty} ${prettyItem(itemId)} in inventory`, "bad");
+    return;
+  }
+
+  const price = state.prices[itemId];
+  const total = price * qty;
+
+  state.inventory[itemId] -= qty;
+  state.kred += total;
+
+  saveGame();
+  renderAll();
+
+  playSfx(coinSound);
+
+  showPopup(`Sold x${qty} ${prettyItem(itemId)} (+${total}🪙)`, "good", "💰");
+  log(`Sold x${qty} ${prettyItem(itemId)} for ${total}🪙`, "good");
+}
+
 
 
 // --- Events ---

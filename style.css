@@ -259,7 +259,7 @@ body{
 
 .row{
   display:grid;
-  grid-template-columns: 1fr auto auto auto;
+  grid-template-columns: 1fr auto auto auto auto;
   gap:10px;
   align-items:center;
   padding:10px 12px;
@@ -411,6 +411,59 @@ body{
 
 
 
+.popup{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: rgba(20, 15, 40, 0.96);
+  padding: 18px 24px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+  z-index: 9999;
+}
+
+.popup.show{
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-icon{
+  font-size: 22px;
+}
+
+.popup.good{
+  border-color: var(--neon);
+  box-shadow: 0 0 15px var(--neon) inset;
+
+
+}
+
+.popup.bad{
+  border: 1px solid var(--line);
+  box-shadow: 0 0 15px var(--line) inset;
+}
+
+
+.qty{
+  width: 55px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+}
+.qty:focus{
+  outline: none;
+  border: 1px solid var(--line);
+  box-shadow: 0 0 10px var(--line) ;
+}
+
 @media (max-width: 900px){
 
   .hud{
@@ -441,47 +494,12 @@ body{
     font-size: 13px;
 }
 
+.popup-text{
+  font-size: 14px;
+}
 }
 
 
 
 
-.popup{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  background: rgba(20, 15, 40, 0.96);
-  padding: 18px 24px;
-  border-radius: 16px;
 
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .3s ease, transform .3s ease;
-  z-index: 9999;
-}
-
-.popup.show{
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.popup-icon{
-  font-size: 22px;
-}
-
-.popup.good{
-  border-color: var(--neon);
-  box-shadow: 0 0 15px var(--neon) inset;
-
-
-}
-
-.popup.bad{
-  border: 1px solid var(--line);
-  box-shadow: 0 0 15px var(--line) inset;
-}
