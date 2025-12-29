@@ -90,7 +90,7 @@ function showPopup(message, type = "good", icon = "⚡") {
   // ⏱️ مدة الظهور (مثالية: 3 ثانية)
   setTimeout(() => {
     popup.classList.remove("show");
-  }, 3000);
+  }, 2000);
 }
 
 
@@ -120,7 +120,6 @@ function renderStatus() {
 }
 
 
-
 function renderMarket() {
   marketEl.innerHTML = "";
 
@@ -128,14 +127,24 @@ function renderMarket() {
     const row = document.createElement("div");
     row.className = "row";
 
-    // ✅ كمية افتراضية 1
+    // 👇  Lag priceHTML 
+    let priceHTML = `${state.prices[it.id]} 🪙`;
+
+    if (state.oldPrices && state.oldPrices[it.id]) {
+      priceHTML = `
+        <span class="old-price">${state.oldPrices[it.id]} 🪙</span>
+        <span class="new-price">${state.prices[it.id]} 🪙</span>
+      `;
+    }
+
+    // 👇  Bruk priceHTML i HTML-en
     row.innerHTML = `
       <div>
         <div class="itemName">${it.name}</div>
         <div class="small">In stock: ${state.inventory[it.id]}</div>
       </div>
 
-      <div class="price">${state.prices[it.id]} 🪙</div>
+      <div class="price">${priceHTML}</div>
 
       <input class="qty" type="number" min="1" max="999" value="1" />
 
@@ -157,6 +166,9 @@ function renderMarket() {
     marketEl.appendChild(row);
   }
 }
+
+
+
 
 
 
@@ -290,14 +302,14 @@ function runRandomEvent() {
     showPopup("💠 Fixer Deal!<br> Prices dropped by 15%.", "good");
   }
 
-   // 🚓NCPD avgift: trekk kred 
+   // 🚓 avgift: trekk kred 
   else if (roll < 0.66) {
     const fee = 20 + Math.floor(Math.random() * 40);
-    state.kred = Math.max(0, state.kred - fee);
+    state.kred -= fee;
     log(`🚓Checkpoint fee paid: ${fee} 🪙`, "bad");
     showPopup(`🚨 Police Checkpoint!<br> You paid a fine of ${fee} 🪙`, "bad");
   }
-
+  
 }
 
 
