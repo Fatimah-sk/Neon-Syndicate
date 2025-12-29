@@ -306,8 +306,8 @@ function runRandomEvent() {
   else if (roll < 0.66) {
     const fee = 20 + Math.floor(Math.random() * 40);
     state.kred -= fee;
-    log(`🚓Checkpoint fee paid: ${fee} 🪙`, "bad");
-    showPopup(`🚨 Police Checkpoint!<br> You paid a fine of ${fee} 🪙`, "bad");
+    log(`🚓Police checkpoint fees: ${fee} 🪙`, "bad");
+    showPopup(`🚨 Police Checkpoint!<br> You received a fine of ${fee} 🪙`, "bad");
   }
   
 }
