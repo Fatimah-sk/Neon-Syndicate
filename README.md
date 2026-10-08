@@ -1,4 +1,5 @@
-![Neon Syndicate Screenshot](Skjermbilde 2026-09-29 095827.png)
+![Neon Syndicate Screenshot](Skjermbilde%202026-09-29%20095827.png)
+
 # ⚡ Neon Syndicate
 
 A cyberpunk trading game where players buy, sell, and travel between dynamic markets.
